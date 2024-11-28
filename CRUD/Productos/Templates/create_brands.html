@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mt-5">
+            <form action="/stock/brand/create" method="post" class="card card-body">
+                <h1 class="text-center" >Crear Marca</h1>
+                  {{error}}
+                  {% csrf_token %}
+                    <div class="mb-3">
+                      <label for="name">Nombre</label>
+                      <input type="text" name="name" id="name" class="form-control" placeholder="Nombre de la marca">
+                    </div>
+
+
+                <button class="btn btn-success">
+                    Crear
+                </button>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}

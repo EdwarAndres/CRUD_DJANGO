@@ -1,0 +1,85 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mt-5">
+            <div class="card card-body">
+                <h4>Nombre del producto: <span class="badge bg-secondary">{{ product.name }}</span></h4>
+                <h4>Descripcion del producto: <span class="badge bg-secondary">{{ product.description }}</span></h4>
+                <h4>Stock del producto: <span class="badge bg-secondary">{{ product.stock }}</span></h4>
+                <h4>Precio del producto: <span class="badge bg-secondary">{{ product.price }}</span></h4>
+                <h4>Marca del producto: <span class="badge bg-secondary">{{ product.brand_id }}</span></h4>
+
+                <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  Actualizar
+                </button>
+            </div>
+
+
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Actualizar producto</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                      <form method="post">
+
+                {{ error }}
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="id_brand_id">Marca</label>
+                    <select name="brand_id" id="id_brand_id" class="form-control">
+                        {% for brand in brands %}
+                            <option value="{{ brand.id }}" {% if brand.id == product.brand.id %}selected{% endif %}>
+                                {{ brand.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="name">Nombre</label>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Nombre" value="{{ product.name }}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="description">Descripcion</label>
+                    <input type="text" name="description" id="description" class="form-control" placeholder="Descripcion" value="{{ product.description }}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="stock">Stock</label>
+                    <input type="number" name="stock" id="stock" class="form-control" placeholder="Stock" value="{{ product.stock }}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="price">Precio</label>
+                    <input type="number" name="price" id="price" class="form-control" placeholder="Precio" value="{{ product.price }}">
+                </div>
+
+                          <div class="d-grid gap-2 d-md-flex justify-content-md-end modal-footer">
+                              <button class="btn btn-primary">
+                                    Actualiar
+                              </button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                          </div>
+
+            </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+
+
+
+

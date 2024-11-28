@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="card card-body mt-5">
+        <h1>Productos</h1>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="/stock/product/create" class="btn btn-primary">Crear producto</a>
+        </div>
+        <ul>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripcion</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ product.stock }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'detail_product' product.id %}" class="btn btn-info">
+                                    Ver / Editar
+                                </a>
+
+                                <form action="{% url 'delete_product' product.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger">
+                                        Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </ul>
+    </div>
+</main>
+
+
+{% endblock %}

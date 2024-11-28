@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<main class="container">
+    <div class="col-md-4 offset-md-4 mt-5">
+        <div class="card card-body">
+            <div>
+                <h4 class="text-center">Cantidad de productos por marca</h4>
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+</main>
+
+{{ brand_names|json_script:"brand-names" }}
+{{ product_counts_data|json_script:"product-counts-data" }}
+
+<script>
+  const ctx = document.getElementById('myChart');
+
+  // Recuperamos los datos del contexto con json
+  const brandNames = JSON.parse(document.getElementById('brand-names').textContent);
+  const productCountsData = JSON.parse(document.getElementById('product-counts-data').textContent);
+
+  //Cantidad de productos por marc
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: brandNames,
+      datasets: [{
+        label: '# de Productos',
+        data: productCountsData,
+        borderWidth: 1,
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        hoverBackgroundColor: 'rgba(75, 192, 192, 0.4)',
+        hoverBorderColor: 'rgba(75, 192, 192, 1)'
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+{% endblock %}

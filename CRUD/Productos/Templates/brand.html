@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+<main class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mt-5">
+            <div class="card card-body">
+                <h5>Nombre de la marca: <span class="badge bg-secondary">{{ brand.name }}</span></h5>
+            <button type="button" class="btn btn-primary mt-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+              Actualizar
+            </button>
+
+
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Actualizar marca</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form method="POST">
+                        {{error}}
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                              <label for="name">Nombre</label>
+                              <input type="text" name="name" id="name" class="form-control" value="{{ brand.name }}" placeholder="Nombre de la marca">
+                        </div>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end modal-footer">
+                            <button class="btn btn-primary">
+                                Actualizar
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        </div>
+                    </form>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4 mt-5">
+            <form action="/stock/product/create" method="post" class="card card-body">
+                <h1 class="text-center">Crear Producto</h1>
+                {{ error }}
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="id_brand_id">Marca</label>
+                    <select name="brand_id" id="id_brand_id" class="form-control">
+                        <option value="" selected disabled>Selecciona una marca</option>
+                        {% for brand in brands %}
+                        <option value="{{ brand.id }}">{{ brand.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="name">Nombre</label>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Nombre">
+                </div>
+
+                <div class="mb-3">
+                    <label for="description">Descripción</label>
+                    <input type="text" name="description" id="description" class="form-control"
+                        placeholder="Descripcion">
+                </div>
+
+                <div class="mb-3">
+                    <label for="stock">Stock</label>
+                    <input type="number" name="stock" id="stock" class="form-control" placeholder="Stock">
+                </div>
+
+                <div class="mb-3">
+                    <label for="price">Precio</label>
+                    <input type="number" name="price" id="price" class="form-control" placeholder="Precio">
+                </div>
+
+                <button class="btn btn-success">
+                    Crear
+                </button>
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock %}
