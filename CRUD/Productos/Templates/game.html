@@ -64,11 +64,13 @@
             right: 10px;
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 15px;
             cursor: pointer;
         }
 
-        #game-over, #win-message, #restart-btn {
+        #game-over,
+        #win-message,
+        #restart-btn {
             display: none;
             font-size: 24px;
         }
@@ -86,12 +88,13 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container text-center" style="background-color: rgba(206, 206, 206, 0.575); border-radius: 40px;">
         <h1 class="mb-4">Juego de Reciclaje</h1>
         <div id="score" class="mb-3">Puntaje: 0</div>
         <div id="game-over" class="mb-3">¡Juego Terminado!</div>
-        <div id="win-message" class="mb-3">¡Felicidades! Has reciclado correctamente todos los elementos.</div>
+        <div id="win-message" class="mb-3">¡Felicidades!</div>
 
         <div class="row mb-4">
             <div class="col-4">
@@ -125,8 +128,6 @@
             <button id="restart-btn" class="btn btn-primary m-5">Reiniciar Juego</button>
         </div>
     </div>
-
-
 
     <!-- Modal de Información de Canecas -->
     <div class="modal fade" id="binInfoModal" tabindex="-1" aria-labelledby="binInfoModalLabel" aria-hidden="true">
@@ -211,43 +212,47 @@
         });
 
         function resetGame() {
-            // Reset score and trash items
+            // Restablecer puntuación y elementos
             score = 0;
             scoreElement.textContent = 'Puntaje: 0';
             remainingTrashItems = [...trashItems];
             usedTrashItems = [];
 
-            // Clear existing trash items
             trashContainer.innerHTML = '';
 
-            // Hide game over and win messages
+
             gameOverElement.style.display = 'none';
             winMessageElement.style.display = 'none';
             restartBtn.style.display = 'none';
 
-            // Create initial trash items
             for (let i = 0; i < 3; i++) {
                 createTrashItem();
             }
         }
 
-        // Add restart button functionality
         restartBtn.addEventListener('click', resetGame);
 
         function createTrashItem() {
-            // Check if all items have been correctly sorted
-            if (remainingTrashItems.length === 0) {
-                winMessageElement.style.display = 'block';
+            // Si no quedan items y el score es menor a 30, mostrar Game Over
+            if (remainingTrashItems.length === 0 && score <= 30) {
+                gameOverElement.style.display = 'block';
                 restartBtn.style.display = 'inline-block';
                 return null;
             }
 
-            // Choose from unique items not yet used
+            // Si no quedan items disponibles sin repetir y el score es menor a 30, mostrar Game Over
             const availableItems = remainingTrashItems.filter(
                 item => !usedTrashItems.some(used => used.name === item.name)
             );
 
-            if (availableItems.length === 0) {
+            if (availableItems.length === 0 && score <= 30) {
+                gameOverElement.style.display = 'block';
+                restartBtn.style.display = 'inline-block';
+                return null;
+            }
+
+            // Si el score es mayor a 30 y no quedan items, mostrar Victoria
+            if (remainingTrashItems.length === 0 && score > 30) {
                 winMessageElement.style.display = 'block';
                 restartBtn.style.display = 'inline-block';
                 return null;
@@ -267,7 +272,6 @@
 
             trashContainer.appendChild(trashElement);
 
-            // Mark item as used
             usedTrashItems.push(item);
 
             return randomIndex;
@@ -294,29 +298,31 @@
                 const droppedColor = e.dataTransfer.getData('text/plain');
                 const binColor = bin.dataset.color;
 
-                if (droppedColor === binColor) {
-                    score += 10;
-                    scoreElement.textContent = `Puntaje: ${score}`;
+                if (window.draggedElement) {
+                    const itemName = window.draggedElement.dataset.name;
 
-                    // Eliminar el elemento usando la referencia guardada
-                    if (window.draggedElement) {
-                        const itemName = window.draggedElement.dataset.name;
-                        
-                        // Eliminar el item de remainingTrashItems
-                        const indexToRemove = remainingTrashItems.findIndex(item => item.name === itemName);
-                        if (indexToRemove !== -1) {
-                            remainingTrashItems.splice(indexToRemove, 1);
-                        }
-
-                        window.draggedElement.remove();
-                        window.draggedElement = null;
-
-                        // Crear nuevo elemento o verificar si se acabaron los elementos
-                        createTrashItem();
+                    const indexToRemoveRemaining = remainingTrashItems.findIndex(item => item.name === itemName);
+                    if (indexToRemoveRemaining !== -1) {
+                        remainingTrashItems.splice(indexToRemoveRemaining, 1);
                     }
-                } else {
-                    score = Math.max(0, score - 5);
+
+                    const indexToRemoveUsed = usedTrashItems.findIndex(item => item.name === itemName);
+                    if (indexToRemoveUsed !== -1) {
+                        usedTrashItems.splice(indexToRemoveUsed, 1);
+                    }
+
+                    if (droppedColor === binColor) {
+                        score += 10;
+                    } else {
+                        score = Math.max(0, score - 5);
+                    }
+
                     scoreElement.textContent = `Puntaje: ${score}`;
+
+                    window.draggedElement.remove();
+                    window.draggedElement = null;
+
+                    createTrashItem();
                 }
 
                 bin.classList.remove('highlight');

@@ -7,7 +7,6 @@
         <div class="col-md-4 offset-md-4 mt-5">
             <form action="/signin/" method="post" class="card card-body">
                 <h1 class="text-center">Login</h1>
-                {{ error }}
                 {% csrf_token %}
 
                 <div class="mb-3">
@@ -18,7 +17,8 @@
                     <label for="password">Contraseña</label>
                     <input type="password" name="password" id="password" class="form-control" placeholder="Contraseña">
                 </div>
-                <button class="btn btn-success">
+                <h6 class="text-danger text-center">{{ error }}</h6>
+                <button class="btn btn-success mb-3">
                     Login
                 </button>
             </form>

@@ -9,7 +9,6 @@
                 {{ error }}
                 {% csrf_token %}
 
-                <!-- Campo Marca -->
                 <div class="mb-3">
                     <label for="id_brand_id">Marca</label>
                     <select name="brand_id" id="id_brand_id" class="form-control">
@@ -21,28 +20,24 @@
                     <div id="brandError" class="text-danger" style="display:none;">* La marca es obligatoria.</div>
                 </div>
 
-                <!-- Campo Nombre -->
                 <div class="mb-3">
                     <label for="name">Nombre</label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Nombre">
                     <div id="nameError" class="text-danger" style="display:none;">* El nombre es obligatorio.</div>
                 </div>
 
-                <!-- Campo Descripción -->
                 <div class="mb-3">
                     <label for="description">Descripción</label>
                     <input type="text" name="description" id="description" class="form-control" placeholder="Descripcion">
                     <div id="descriptionError" class="text-danger" style="display:none;">* La descripción es obligatoria.</div>
                 </div>
 
-                <!-- Campo Stock -->
                 <div class="mb-3">
                     <label for="stock">Stock</label>
                     <input type="number" name="stock" id="stock" class="form-control" placeholder="Stock">
                     <div id="stockError" class="text-danger" style="display:none;">* El stock es obligatorio.</div>
                 </div>
 
-                <!-- Campo Precio -->
                 <div class="mb-3">
                     <label for="price">Precio</label>
                     <input type="number" name="price" id="price" class="form-control" placeholder="Precio">
@@ -184,6 +179,8 @@
                 priceInput.style.borderColor = 'red';
             }
         });
+
+        
     });
 </script>
 {% endblock %}
