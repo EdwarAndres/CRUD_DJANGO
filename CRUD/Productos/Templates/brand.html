@@ -23,13 +23,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-                    <form method="POST">
+                    <form method="POST" id="brandForm">
                         {{error}}
                         {% csrf_token %}
 
                         <div class="mb-3">
                               <label for="name">Nombre</label>
                               <input type="text" name="name" id="name" class="form-control" value="{{ brand.name }}" placeholder="Nombre de la marca">
+                              <div id="nameError" class="text-danger" style="display:none;">* El nombre es obligatorio.</div>
                         </div>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end modal-footer">
                             <button class="btn btn-primary">
@@ -49,8 +50,33 @@
     </div>
 </main>
 
+<script>
+  const nameInput = document.getElementById('name');
+  const nameError = document.getElementById('nameError');
+  const brandForm = document.getElementById('brandForm');
 
+  // Validamos el campo
+  brandForm.addEventListener('submit', function(event) {
+      if (nameInput.value.trim() === '') {
+          nameError.style.display = 'block';
+          nameInput.style.borderColor = 'red';
+          event.preventDefault(); 
+      } else {
+          nameError.style.display = 'none';
+      }
+  });
 
+  // Evento para limpiar el error mientras el usuario escribe
+  nameInput.addEventListener('input', function () {
+            if (nameInput.value.trim() !== '') {
+                nameError.style.display = 'none';
+                nameInput.style.borderColor = '';
+            } else {
+                nameError.style.display = 'block';
+                nameInput.style.borderColor = 'red';
+            }
+        });
+</script>
 
 
 

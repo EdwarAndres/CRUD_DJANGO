@@ -17,5 +17,8 @@ urlpatterns = [
     path('product/<int:id>/delete', views.delete_product, name='delete_product'),
 
     #Statics
-    path('stats/', views.stats, name='stats')
+    path('stats/', views.stats, name='stats'),
+
+    #Juego
+    path('game/', views.game, name='game'),
 ]

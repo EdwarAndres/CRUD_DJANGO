@@ -123,7 +123,24 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+# settings.py
 STATIC_URL = 'static/'
+
+STATICFILES_DIR = [
+    'Productos/static',
+]
+
+#UBICACION DE LOS ARCHIVOS ESTATICOS
+STATIC_ROOT = BASE_DIR / 'static'
+
+#URL PUBLICA PARA LOS ARCHIVOS MEDIA
+MEDIA_URL = '/media/'
+
+#UBICACION DEL ARCHIVO MEDIA
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
+
 
 LOGIN_URL = '/signin'
 

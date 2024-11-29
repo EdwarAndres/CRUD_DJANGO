@@ -4,40 +4,49 @@
 <main class="container">
     <div class="row">
         <div class="col-md-4 offset-md-4 mt-5">
-            <form action="/stock/product/create" method="post" class="card card-body">
+            <form action="/stock/product/create" method="post" class="card card-body" id="productForm">
                 <h1 class="text-center">Crear Producto</h1>
                 {{ error }}
                 {% csrf_token %}
 
+                <!-- Campo Marca -->
                 <div class="mb-3">
                     <label for="id_brand_id">Marca</label>
                     <select name="brand_id" id="id_brand_id" class="form-control">
                         <option value="" selected disabled>Selecciona una marca</option>
                         {% for brand in brands %}
-                        <option value="{{ brand.id }}">{{ brand.name }}</option>
+                            <option value="{{ brand.id }}">{{ brand.name }}</option>
                         {% endfor %}
                     </select>
+                    <div id="brandError" class="text-danger" style="display:none;">* La marca es obligatoria.</div>
                 </div>
 
+                <!-- Campo Nombre -->
                 <div class="mb-3">
                     <label for="name">Nombre</label>
                     <input type="text" name="name" id="name" class="form-control" placeholder="Nombre">
+                    <div id="nameError" class="text-danger" style="display:none;">* El nombre es obligatorio.</div>
                 </div>
 
+                <!-- Campo Descripción -->
                 <div class="mb-3">
                     <label for="description">Descripción</label>
-                    <input type="text" name="description" id="description" class="form-control"
-                        placeholder="Descripcion">
+                    <input type="text" name="description" id="description" class="form-control" placeholder="Descripcion">
+                    <div id="descriptionError" class="text-danger" style="display:none;">* La descripción es obligatoria.</div>
                 </div>
 
+                <!-- Campo Stock -->
                 <div class="mb-3">
                     <label for="stock">Stock</label>
                     <input type="number" name="stock" id="stock" class="form-control" placeholder="Stock">
+                    <div id="stockError" class="text-danger" style="display:none;">* El stock es obligatorio.</div>
                 </div>
 
+                <!-- Campo Precio -->
                 <div class="mb-3">
                     <label for="price">Precio</label>
                     <input type="number" name="price" id="price" class="form-control" placeholder="Precio">
+                    <div id="priceError" class="text-danger" style="display:none;">* El precio es obligatorio.</div>
                 </div>
 
                 <button class="btn btn-success">
@@ -47,4 +56,134 @@
         </div>
     </div>
 </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Obtener campos del formulario
+        const productForm = document.getElementById('productForm');
+        const brandInput = document.getElementById('id_brand_id');
+        const nameInput = document.getElementById('name');
+        const descriptionInput = document.getElementById('description');
+        const stockInput = document.getElementById('stock');
+        const priceInput = document.getElementById('price');
+
+        // Obtener campos de error
+        const brandError = document.getElementById('brandError');
+        const nameError = document.getElementById('nameError');
+        const descriptionError = document.getElementById('descriptionError');
+        const stockError = document.getElementById('stockError');
+        const priceError = document.getElementById('priceError');
+
+        // Validacion al enviar el formulario
+        productForm.addEventListener('submit', function (event) {
+            let isValid = true;
+
+            // Validacion de la marca
+            if (brandInput.value === '') {
+                brandError.style.display = 'block';
+                brandInput.style.borderColor = 'red';
+                isValid = false;
+            } else {
+                brandError.style.display = 'none';
+                brandInput.style.borderColor = '';
+            }
+
+            // Validacion del nombre
+            if (nameInput.value.trim() === '') {
+                nameError.style.display = 'block';
+                nameInput.style.borderColor = 'red';
+                isValid = false;
+            } else {
+                nameError.style.display = 'none';
+                nameInput.style.borderColor = '';
+            }
+
+            // Validacion de la descripción
+            if (descriptionInput.value.trim() === '') {
+                descriptionError.style.display = 'block';
+                descriptionInput.style.borderColor = 'red';
+                isValid = false;
+            } else {
+                descriptionError.style.display = 'none';
+                descriptionInput.style.borderColor = '';
+            }
+
+            // Validacion del stock
+            if (stockInput.value <= 0 || stockInput.value.trim() === '') {
+                stockError.style.display = 'block';
+                stockInput.style.borderColor = 'red';
+                isValid = false;
+            } else {
+                stockError.style.display = 'none';
+                stockInput.style.borderColor = '';
+            }
+
+            // Validacion del precio
+            if (priceInput.value <= 0 || priceInput.value.trim() === '') {
+                priceError.style.display = 'block';
+                priceInput.style.borderColor = 'red';
+                isValid = false;
+            } else {
+                priceError.style.display = 'none';
+                priceInput.style.borderColor = '';
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        // Eventos para limpiar el error mientras el usuario escribe
+        brandInput.addEventListener('change', function () {
+            if (brandInput.value !== '') {
+                brandError.style.display = 'none';
+                brandInput.style.borderColor = '';
+            } else {
+                brandError.style.display = 'block';
+                brandInput.style.borderColor = 'red';
+            }
+        });
+
+        nameInput.addEventListener('input', function () {
+            if (nameInput.value.trim() !== '') {
+                nameError.style.display = 'none';
+                nameInput.style.borderColor = '';
+            } else {
+                nameError.style.display = 'block';
+                nameInput.style.borderColor = 'red';
+            }
+        });
+
+        descriptionInput.addEventListener('input', function () {
+            if (descriptionInput.value.trim() !== '') {
+                descriptionError.style.display = 'none';
+                descriptionInput.style.borderColor = '';
+            } else {
+                descriptionError.style.display = 'block';
+                descriptionInput.style.borderColor = 'red';
+            }
+        });
+
+
+        stockInput.addEventListener('input', function () {
+            if (stockInput.value > 0) {
+                stockError.style.display = 'none';
+                stockInput.style.borderColor = '';
+            } else {
+                stockError.style.display = 'block';
+                stockInput.style.borderColor = 'red';
+            }
+        });
+
+        priceInput.addEventListener('input', function () {
+            if (priceInput.value > 0) {
+                priceError.style.display = 'none';
+                priceInput.style.borderColor = '';
+            } else {
+                priceError.style.display = 'block';
+                priceInput.style.borderColor = 'red';
+            }
+        });
+    });
+</script>
 {% endblock %}

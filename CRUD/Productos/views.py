@@ -108,7 +108,7 @@ def delete_product(request, id):
 
 @login_required
 def stats(request):
-    # Agrupar los productos por la marca y contar cuántos hay por cada una
+    # Agrupar los productos por la marca y contar cuantos hay por cada una
     product_counts = models.Product.objects.values('brand_id__name').annotate(product_count=Count('id')).order_by('-product_count')
 
     # Extraer los nombres de las marcas y la cantidad de productos
@@ -121,6 +121,7 @@ def stats(request):
     })
 
 
-
+def game(request):
+    return render(request, 'game.html')
 
 

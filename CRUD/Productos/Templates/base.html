@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 <body>
@@ -41,6 +42,9 @@
           <a class="nav-link" href="/stock/stats">Estadisticas</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/stock/game/">Juego</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>
         </li>
         {% else %}
@@ -49,6 +53,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/signup">Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/stock/game/">Juego</a>
         </li>
         {% endif %}
       </ul>

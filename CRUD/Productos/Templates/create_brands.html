@@ -4,21 +4,48 @@
 <main class="container">
     <div class="row">
         <div class="col-md-4 offset-md-4 mt-5">
-            <form action="/stock/brand/create" method="post" class="card card-body">
+            <form action="/stock/brand/create" method="post" class="card card-body" id="brandForm">
                 <h1 class="text-center" >Crear Marca</h1>
-                  {{error}}
                   {% csrf_token %}
                     <div class="mb-3">
                       <label for="name">Nombre</label>
                       <input type="text" name="name" id="name" class="form-control" placeholder="Nombre de la marca">
+                      <div id="nameError" class="text-danger" style="display:none;">* El nombre es obligatorio.</div>
                     </div>
 
 
-                <button class="btn btn-success">
+                <button class="btn btn-success" type="submit">
                     Crear
                 </button>
             </form>
         </div>
     </div>
 </main>
+<script>
+    const nameInput = document.getElementById('name');
+    const nameError = document.getElementById('nameError');
+    const brandForm = document.getElementById('brandForm');
+
+    // Al enviar el formulario, validamos el campo
+    brandForm.addEventListener('submit', function(event) {
+        if (nameInput.value.trim() === '') {
+            nameError.style.display = 'block';
+            nameInput.style.borderColor = 'red';
+            event.preventDefault(); 
+        } else {
+            nameError.style.display = 'none';
+        }
+    });
+
+    // Evento para limpiar el error mientras el usuario escribe
+    nameInput.addEventListener('input', function () {
+            if (nameInput.value.trim() !== '') {
+                nameError.style.display = 'none';
+                nameInput.style.borderColor = '';
+            } else {
+                nameError.style.display = 'block';
+                nameInput.style.borderColor = 'red';
+            }
+        });
+</script>
 {% endblock %}

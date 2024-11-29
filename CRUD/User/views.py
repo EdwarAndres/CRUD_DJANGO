@@ -30,32 +30,37 @@ def signin(request):
             return redirect('/')
 
 
-def signup(request):
-    if request.method == 'GET':
-        return render(request, 'register.html', {
-            'form': forms.SignUpForm
-        })
-    else:
-        if request.POST['password1'] == request.POST['password2']:
-            try:
-                user = User.objects.create_user(username=request.POST['username'],
-                                                first_name=request.POST['first_name'],
-                                                last_name=request.POST['last_name'],
-                                                email=request.POST['email'],
-                                                password=request.POST['password1'])
-                user.save()
-                login(request, user)
-                return redirect('/')
-            except IntegrityError:
-                return render(request, 'register.html', {
-                    'form': forms.SignUpForm,
-                    'error': 'Usuario ya existe',
-                })
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.core.exceptions import ValidationError
+from . import forms
 
+def signup(request):
+    if request.method == 'POST':
+        form = forms.SignUpForm(request.POST)
+        if form.is_valid():
+            try:
+                user = form.save(commit=False)  
+                user.set_password(form.cleaned_data['password1'])  
+                user.save()  
+                login(request, user)  
+                return redirect('/') 
+            except ValidationError:
+                return render(request, 'register.html', {
+                    'form': form,
+                    'error': 'Hubo un problema al crear el usuario, intenta nuevamente.',
+                })
+        else:
+            return render(request, 'register.html', {
+                'form': form,
+                'error': 'Por favor corrige los errores en el formulario.',
+            })
+    else:
+        form = forms.SignUpForm()
         return render(request, 'register.html', {
-            'form': forms.SignUpForm,
-            'error': 'Las contraseñas no coinciden',
+            'form': form
         })
+
 
 
 def signout(request):
